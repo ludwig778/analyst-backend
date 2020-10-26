@@ -1,6 +1,6 @@
 import logging
 
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from time import sleep
 
 import pandas as pd
@@ -19,6 +19,16 @@ class AlphaVantageAdapter(object):
         self.key = key
         self.session = requests.Session()
         self.last_call = None
+        self.available_at = None
+
+    def _is_available(self):
+        if self.available_at is not None:
+            if datetime.now() < self.available_at:
+                return False
+
+            self.available_at = None
+
+        return True
 
     def _wait_before_call(self):
         """
@@ -93,6 +103,9 @@ class AlphaVantageAdapter(object):
         """
         Get the latest data for the specified symbol
         """
+        if not self._is_available():
+            return
+
         if not asset_type:
             logger.error("No asset_type argument set")
             raise Exception("asset_type must be set")
@@ -114,6 +127,12 @@ class AlphaVantageAdapter(object):
             raise SymbolNotFound(symbol)
 
         elif ret_json.get("Note"):
+            # Set the next time the api will be available
+            self.available_at = datetime.combine(
+                date.today() + timedelta(days=1),
+                datetime.min.time()
+            )
+
             logger.error("Too much api calls")
             raise TooMuchApiCall(symbol)
 
