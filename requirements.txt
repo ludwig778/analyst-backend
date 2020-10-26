@@ -1,0 +1,8 @@
+beautifulsoup4
+cached_property
+django
+django-rest-framework
+pandas
+pandas_datareader
+psycopg2-binary
+redis

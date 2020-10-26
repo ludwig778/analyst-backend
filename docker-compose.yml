@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  analyst:
+    image: analyst:dev
+    volumes:
+      - ./:/home/analyst/analyst
+    ports:
+      - "8080:8080"
+    build: .
+    environment:
+      PYTHONSTARTUP: ./startup.py
+      PGHOST: postgresql
+      PGDATABASE: analyst
+      PGUSER: analyst
+      PGPASSWORD: analyst123
+      REDIS_HOST: redis
+      ALPHA_VANTAGE_URL: https://www.alphavantage.co
+      INVESTING_URL: https://www.investing.com
+      DEBUG: "true"
+    depends_on:
+      - postgresql
+      - redis
+
+  postgresql:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: analyst
+      POSTGRES_PASSWORD: analyst123
+    volumes:
+      - ./data/postgresql:/var/lib/postgresql/data
+
+  redis:
+    image: redis:6.0.8
+    command: redis-server --appendonly yes
+    volumes:
+      - ./data/redis:/data
+
+
+networks:
+  default:
+    name: analyst_bridge
