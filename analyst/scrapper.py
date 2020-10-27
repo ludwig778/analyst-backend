@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+
 import pandas as pd
 
 from adapters import datareaders, investing
