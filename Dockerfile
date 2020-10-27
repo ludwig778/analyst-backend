@@ -10,6 +10,7 @@ RUN ["adduser", "--gecos", "", "--disabled-password", "analyst"]
 USER analyst
 
 ENV PATH=/usr/local/bin:/usr/bin:/home/analyst/.local/bin:/bin
+ENV PYTHONPATH=/home/analyst/analyst
 
 COPY requirements.txt /tmp/
 RUN python3 -m pip install --no-cache-dir --user \
