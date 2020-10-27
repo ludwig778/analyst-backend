@@ -126,7 +126,7 @@ def scrap_values():  # noqa: C901
         if not ticker:
             pending_ticker = asset.extra_data.get("pending_ticker")
 
-            invalid_tickers = asset.extra_data.get("invalid_tickers")
+            invalid_tickers = asset.extra_data.get("invalid_tickers") or ()
             if (
                 not pending_ticker or
                 pending_ticker in invalid_tickers
@@ -140,11 +140,12 @@ def scrap_values():  # noqa: C901
 
         if not source:
             if pending_ticker:
-                if not asset.extra_data["invalid_tickers"]:
-                    asset.extra_data["invalid_tickers"] = {}
+                asset.extra_data.setdefault("invalid_tickers", [])
 
-                asset.extra_data["invalid_tickers"].add(pending_ticker)
-                asset.save()
+                if pending_ticker not in asset.extra_data["invalid_tickers"]:
+                    asset.extra_data["invalid_tickers"].append(pending_ticker)
+                    asset.save()
+
             continue
 
         if pending_ticker:
@@ -155,11 +156,11 @@ def scrap_values():  # noqa: C901
             if not check_prices_diff(last_close, last_close_stored):
                 print(f"Prices don't match   : {asset.name} ({last_close};{last_close_stored})")
 
-                if not asset.extra_data["invalid_tickers"]:
-                    asset.extra_data["invalid_tickers"] = {}
+                asset.extra_data.setdefault("invalid_tickers", [])
 
-                asset.extra_data["invalid_tickers"].add(pending_ticker)
-                asset.save()
+                if pending_ticker not in asset.extra_data["invalid_tickers"]:
+                    asset.extra_data["invalid_tickers"].append(pending_ticker)
+                    asset.save()
 
                 continue
 
