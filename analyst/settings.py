@@ -8,6 +8,8 @@ SECRET_KEY = 's1rq#d6vxm03iat)nyj$$a^x*1((=6z%_4_^0bpdmq0x#201z+'
 
 DEBUG = True
 
+TEST = os.environ.get("TEST", "").lower() == "true"
+
 ALLOWED_HOSTS = []
 
 
@@ -88,6 +90,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ALPHA_VANTAGE_CONFIG = get_config_from_env("ALPHA_VANTAGE")
 
 REDIS_CONFIG = get_config_from_env("REDIS")
+
+if TEST:
+    REDIS_CONFIG["prefix"] = "test"
 
 INVESTING_CONFIG = {
     "url": "https://www.investing.com",
