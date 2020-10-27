@@ -1,6 +1,7 @@
 beautifulsoup4
 cached_property
 django
+django-debug-toolbar
 django-rest-framework
 pandas
 pandas_datareader
