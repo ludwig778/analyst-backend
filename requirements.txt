@@ -3,6 +3,7 @@ cached_property
 django
 django-debug-toolbar
 django-rest-framework
+djangorestframework-simplejwt
 pandas
 pandas_datareader
 psycopg2-binary
