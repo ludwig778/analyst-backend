@@ -75,6 +75,7 @@ class Index(models.Model, UpdateMixin):
 
     class Meta:
         ordering = ['id']
+        verbose_name_plural = "Indexes"
 
     name = models.CharField(max_length=30, unique=True)
     asset = models.OneToOneField(
