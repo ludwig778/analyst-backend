@@ -1,4 +1,7 @@
-ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+ARGS = $(filter-out $@,$(MAKECMDGOALS))
+
+
+default: run_dev_server
 
 wait_for_db:
 	until pg_isready; do sleep 1; done
@@ -16,7 +19,7 @@ create_superuser:
 	echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username='admin') or User.objects.create_superuser('admin', 'admin@myproject.com', 'password')" | python3 manage.py shell
 
 load_fixtures: wait_for_db create_tables
-	echo "from tests.conftest import AnalysisTestDatas; import os.path; from analyst.settings import FIXTURE_PATH; AnalysisTestDatas(os.path.join(FIXTURE_PATH, 'base', 'fixtures.json'))" | python3 manage.py shell
+	#echo "from tests.conftest import AnalysisTestDatas; import os.path; from analyst.settings import FIXTURE_PATH; AnalysisTestDatas(os.path.join(FIXTURE_PATH, 'base', 'fixtures.json'))" | python3 manage.py shell
 
 run_dev_server:
 	python3 manage.py runserver 0.0.0.0:8080
@@ -38,13 +41,16 @@ ipy:
 isort:
 	python3 -m isort .
 
-test: create_tables
+tests: create_tables
 	pytest
+
+test_on: create_tables
+	pytest -vs ${ARGS}
 
 coverage:
 	pytest
 
-coverage_local:
+coverage_html:
 	pytest
 
 lint:
@@ -59,6 +65,8 @@ load:
 
 piprot:
 	piprot
+
+sure: lint piprot isort
 
 clean:
 	find -name "*.pyc" -o -name "__pycache__" | tac | xargs rm -rf
