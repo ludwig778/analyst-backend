@@ -1,7 +1,7 @@
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
 
 
-default: run_dev_server
+default: run_dev
 
 wait_for_db:
 	until pg_isready; do sleep 1; done

@@ -21,7 +21,6 @@ WORKDIR /home/analyst/analyst
 COPY --chown=analyst:analyst . .
 
 ENTRYPOINT ["make"]
-CMD ["run_dev"]
 
 FROM base as dev
 COPY requirements.dev.txt /tmp/
