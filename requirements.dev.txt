@@ -3,5 +3,6 @@ ipython
 isort
 piprot
 pytest
+pytest-cov
 pytest-django
 pytest-env

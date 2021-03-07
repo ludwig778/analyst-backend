@@ -47,11 +47,11 @@ tests: create_tables
 test_on: create_tables
 	pytest -vs ${ARGS}
 
-coverage:
-	pytest
+cov:
+	pytest --cov=adapters --cov=analyst
 
-coverage_html:
-	pytest
+cov_html:
+	pytest --cov=adapters --cov=analyst --cov-report html:coverage_html
 
 lint:
 	python3 -m flake8
