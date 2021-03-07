@@ -30,13 +30,13 @@ run_uwsgi:
 run_dev: create_tables create_superuser load_fixtures run_dev_server
 
 sh:
-	bash
+	bash ${ARGS}
 
 py:
-	python3 manage.py shell
+	python3 manage.py shell ${ARGS}
 
 ipy:
-	python3 manage.py shell -i ipython
+	python3 manage.py shell -i ipython ${ARGS}
 
 isort:
 	python3 -m isort .
