@@ -1,7 +1,7 @@
+from django.contrib.auth.models import User
 from pytest import fixture, mark
 
 from adapters import redis as redis_adapter
-from django.contrib.auth.models import User
 
 
 @fixture(scope="session")
