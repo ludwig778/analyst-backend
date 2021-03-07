@@ -19,7 +19,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh')
 ]
 
-if settings.DEBUG:
+if settings.DEBUG:  # pragma: no cover
     import debug_toolbar
     urlpatterns.append(
         path('__debug__/', include(debug_toolbar.urls))
